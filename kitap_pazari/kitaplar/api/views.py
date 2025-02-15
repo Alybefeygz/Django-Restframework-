@@ -7,6 +7,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework import permissions
 from rest_framework.exceptions import ValidationError
 from kitaplar.api.permissions import IsAdminUserOrReadOnly, IsYorumSahibiOrReadOnly
+from kitaplar.api.pagination import SmallPagination, LargePagination
 
 
 from kitaplar.api.serializers import KitapSerializer, YorumSerializer
@@ -15,9 +16,10 @@ from kitaplar.models import Kitap, Yorum
 
 
 class KitapListCreateAPIView(generics.ListCreateAPIView):
-        queryset = Kitap.objects.all()
+        queryset = Kitap.objects.all().order_by('-id')
         serializer_class = KitapSerializer
         permission_classes = [IsAdminUserOrReadOnly]
+        pagination_class = LargePagination
 
 
 class KitapDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
